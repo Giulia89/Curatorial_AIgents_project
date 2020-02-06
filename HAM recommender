@@ -1,0 +1,95 @@
+# -*- coding: utf-8 -*-
+
+""" API """
+
+import urllib3
+import json
+api_key = "fe328c60-46d7-11ea-a9bf-f57013651a17"
+
+### FIELDS TO SELECT ON ###
+fields = {
+    'apikey': api_key,
+    'fields': 'objectnumber,title,dated',
+    "Object": '?',      #https://github.com/harvardartmuseums/api-docs/blob/master/sections/object.md
+    "Person": "28481",  #https://github.com/harvardartmuseums/api-docs/blob/master/sections/person.md
+    "Exhibition": "?",
+    "Publication": "?",
+    "Gallery": "?",
+    "Spectrum": "?",
+    "Classification": "?",
+    "Century": "?",
+    "Color": "?",
+    "Culture": "?",
+    "Group": "?",
+    "Title": "cat",
+    "Medium": "?",
+    "Period": "?",
+    "Place": "?",
+    "Technique": "?",
+    "Worktype": "?",
+    "Activity": "?",
+    "Site": "?",
+    #Video = "?"
+    "Image" : "?", #https://github.com/harvardartmuseums/api-docs/blob/master/sections/image.md
+    #Audio = "?"
+    "Annotation": "?"    }
+
+#"https://api.harvardartmuseums.org/object?apikey=fe328c60-46d7-11ea-a9bf-f57013651a17&title=cat&fields=objectnumber%2Ctitle%2Cdated&page=2"
+
+http = urllib3.PoolManager()
+
+# Find all of the objects with the word "cat" in the title and return only a few fields per record
+r = http.request('GET', 'https://api.harvardartmuseums.org/object',
+    fields = fields)
+
+print(r.status, r.data)
+
+parsed_json = (json.loads(r.data))
+print(json.dumps(parsed_json, indent=4, sort_keys=True))
+
+records_list = parsed_json["records"]
+id_list = []
+for item in records_list:
+    id_list.append(item['id'])
+
+
+"""
+RANDOMIZER   --> could be replaced with AI
+"""
+random_pics_to_select = 1 #number of pictures to choose
+sample_size = len(id_list)
+random_numbers = []
+random_ids = []
+# seed the pseudorandom number generator
+from random import seed
+from random import randint
+# seed random number generator
+seed(1)
+# generate some integers
+for _ in range(random_pics_to_select):
+	value = randint(0, sample_size)
+	random_numbers.append(value)
+
+for number in random_numbers:
+    random_ids.append(id_list[number])
+
+
+"""
+OPEN IMAGE
+"""
+from PIL import Image
+import urllib.request
+import io
+
+for pic in random_ids:
+    #URL = 'https://nrs.harvard.edu/urn-3:HUAM:' + str(755710)
+    URL = 'https://nrs.harvard.edu/urn-3:HUAM:' + str(112313)
+#    URL =  "https://nrs.harvard.edu/urn-3:huam:DDC112313_dynmc?width=1285&height=880"
+    
+    with urllib.request.urlopen(URL) as url:
+        f = io.BytesIO(url.read())
+    
+    img = Image.open(f)
+    
+    img.show()
+
