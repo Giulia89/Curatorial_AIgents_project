@@ -1,3 +1,11 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Feb 15 17:01:03 2020
+
+@author: giuliataurino
+"""
+
 # -*- coding: utf-8 -*-
 
 """ API """
@@ -9,9 +17,9 @@ api_key = "fe328c60-46d7-11ea-a9bf-f57013651a17"
 ### FIELDS TO SELECT ON ###
 fields = {
     'apikey': api_key,
-    'fields': 'objectnumber,title,dated',
+    'fields': 'objectnumber,title,dated,color, seeAlso, Annotation', 
     "Object": '?',      #https://github.com/harvardartmuseums/api-docs/blob/master/sections/object.md
-    "Person": "28481",  #https://github.com/harvardartmuseums/api-docs/blob/master/sections/person.md
+    "Person": "?",  #https://github.com/harvardartmuseums/api-docs/blob/master/sections/person.md
     "Exhibition": "?",
     "Publication": "?",
     "Gallery": "?",
@@ -21,7 +29,7 @@ fields = {
     "Color": "?",
     "Culture": "?",
     "Group": "?",
-    "Title": "cat",
+    "Title": "?", #cat
     "Medium": "?",
     "Period": "?",
     "Place": "?",
@@ -29,6 +37,7 @@ fields = {
     "Worktype": "?",
     "Activity": "?",
     "Site": "?",
+    "sort": "random",
     #Video = "?"
     "Image" : "?", #https://github.com/harvardartmuseums/api-docs/blob/master/sections/image.md
     #Audio = "?"
@@ -82,8 +91,8 @@ import urllib.request
 import io
 
 for pic in random_ids:
-    #URL = 'https://nrs.harvard.edu/urn-3:HUAM:' + str(755710)
-    URL = 'https://nrs.harvard.edu/urn-3:HUAM:' + str(112313)
+    URL = 'https://nrs.harvard.edu/urn-3:HUAM:' + str(755710)
+#    URL = 'https://nrs.harvard.edu/urn-3:HUAM:' + str(112313)
 #    URL =  "https://nrs.harvard.edu/urn-3:huam:DDC112313_dynmc?width=1285&height=880"
     
     with urllib.request.urlopen(URL) as url:
@@ -92,4 +101,3 @@ for pic in random_ids:
     img = Image.open(f)
     
     img.show()
-
